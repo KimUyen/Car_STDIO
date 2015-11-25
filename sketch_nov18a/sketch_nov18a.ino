@@ -15,7 +15,7 @@ Servo gServo;
 #define LEFT2_PIN 10
 
 // default value
-#define NUMPULSE_90 20
+#define NUMPULSE_90 8
 #define PULSESPERTURN 15
 #define ANGLE_0 0
 #define ANGLE_90 90
@@ -90,11 +90,11 @@ void turnRight()
 {
     turnEye(CENTER);
 
-    analogWrite(RIGHT1_PIN, LOW);
+    analogWrite(RIGHT1_PIN, 0);
     analogWrite(RIGHT2_PIN, 180);
     
     analogWrite(LEFT1_PIN, 200);
-    analogWrite(LEFT2_PIN, LOW);
+    analogWrite(LEFT2_PIN, 0);
 
     runEncoder (NUMPULSE_90);
 }
@@ -103,14 +103,13 @@ void turnLeft ()
 {
     turnEye(CENTER);
 
-    analogWrite(RIGHT1_PIN, 180);
-    analogWrite(RIGHT2_PIN, LOW);
-    
-    analogWrite(LEFT1_PIN, LOW);
-    analogWrite(LEFT2_PIN, 200);
 
+    analogWrite(LEFT1_PIN, 0);
+    analogWrite(LEFT2_PIN, 200);
+    analogWrite(RIGHT1_PIN, 180);
+    analogWrite(RIGHT2_PIN, 0);
+   
     runEncoder (NUMPULSE_90);
-    
 }
 
 void runEncoder (int numPulse)
@@ -118,7 +117,7 @@ void runEncoder (int numPulse)
     attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT), counter_left, FALLING);
     attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), counter_right, FALLING);
     
-    while (pulses[LEFT] < numPulse && pulses[RIGHT] < numPulse)
+    while (pulses[LEFT] < NUMPULSE_90 && pulses[RIGHT] < NUMPULSE_90)
     {
       // Do nothing
     }
@@ -132,27 +131,27 @@ void runEncoder (int numPulse)
 
 void STOP ()
 {
-    analogWrite(RIGHT2_PIN, LOW);
-    analogWrite(RIGHT1_PIN, LOW);
-    analogWrite(LEFT2_PIN, LOW);
-    analogWrite(LEFT1_PIN, LOW);
+    analogWrite(RIGHT2_PIN, 0);
+    analogWrite(RIGHT1_PIN, 0);
+    analogWrite(LEFT2_PIN, 0);
+    analogWrite(LEFT1_PIN, 0);
    
 }
 void goHead ()
 {
     turnEye (CENTER);
-    analogWrite(RIGHT2_PIN, LOW);
+    analogWrite(RIGHT2_PIN, 0);
     analogWrite(RIGHT1_PIN, 180);
-    analogWrite(LEFT2_PIN, LOW);
+    analogWrite(LEFT2_PIN, 0);
     analogWrite(LEFT1_PIN, 200);
 }
 
 void goBack ()
 {
     turnEye (CENTER);
-    analogWrite(RIGHT1_PIN, LOW);
+    analogWrite(RIGHT1_PIN, 0);
     analogWrite(RIGHT2_PIN, 180);
-    analogWrite(LEFT1_PIN, LOW);
+    analogWrite(LEFT1_PIN, 0);
     analogWrite(LEFT2_PIN, 200);
 } 
 void setup()
@@ -179,7 +178,7 @@ void setup()
 bool haveStuff()
 {
     long distance = GetDistance();
-    if (distance < DISTANCE_STUFF && distance != 0)
+    if (distance < DISTANCE_STUFF && distance > 0)
       return true;
     return false;
 }
@@ -193,8 +192,6 @@ void loop()
      // Do nothing
   }
 
-  goBack ();
-  delay (50);
   STOP ();
   
   turnEye (LEFT);
@@ -203,19 +200,19 @@ void loop()
       turnEye (RIGHT);
       if (haveStuff ())
         {
-          goBack ();
           can_goHead = false;
+          goBack ();
           delay (300);
         }
         else
         {
-          turnRight ();
           can_goHead = true;
+          turnRight ();
         }
   }
   else
   {
-    turnLeft ();
     can_goHead = true;
+    turnLeft ();
   }
 }
