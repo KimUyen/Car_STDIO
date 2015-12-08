@@ -24,7 +24,6 @@ int button = 13;
 #define ENCODER_RIGHT  3
 #define PWM 200
 #define DISTANCE_STUFF 35
-#define ALLOW_DISTANCE 50
 #define NUMPULSE_90 8
 
 volatile unsigned int pulses[2] = {0, 0};  // number of pulses
