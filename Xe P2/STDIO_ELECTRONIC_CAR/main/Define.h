@@ -44,7 +44,7 @@ const uint8_t gAddressEEPROM = 0;
 #define PULSESPERTURN   15
 #define ENCODER_LEFT    2
 #define ENCODER_RIGHT   3
-#define HOLES_FOR_TURN  10
+#define HOLES_FOR_TURN  30
 #define HOLES_DISC      15
 
 

@@ -35,57 +35,37 @@ void BalanceIFButtonPUSH()
 void ObstacleAvoidance()
 {
   // Go Head until detect obstacle.
-  Eye::GetInstance()->Turn(Direct::CENTER);
   Driver::GetInstance()->GoHead();
   
-  while (!Eye::GetInstance()->HaveObstacle() && gIsGoBack == false)
+  while (!Eye::GetInstance()->HaveObstacle() && !Driver::GetInstance()->IsGoBack())
   {
     Serial.println("IN WHILE");
     // Do nothing.
   }
   
-  // Detect obstacle and controler direction
-  // If in front of car have obstacle -> Check right or left obstacle -> Di chuyen den noi khong vat can, uu tien huong co khoang cach den vat can nho hon.
-  
   // Stop motor.
   Driver::GetInstance()->Stop();
-
-  /////////////////////////////////////////////////////////////
-  // Get distance to Direct Left
-  Eye::GetInstance()->Turn(Direct::L);
-  delay(500);
-    
-  // Nếu bên trái khoảng cách đến vật cản có thể chấp nhận thì đi theo hướng này
-  ////////////////////////////////////////////////////////////
-  if (!Eye::GetInstance()->HaveObstacle())
+  ///////////////////////////////////////////////////////////////
+  // TURN LEFT
+  if (Driver::GetInstance()->CanTurnLeft())
   {
     Serial.println("TRAI");
-    Eye::GetInstance()->Turn(Direct::CENTER);
     Driver::GetInstance()->TurnLeft();
-    gIsGoBack = false;
   }
   else
   {
-    /////////////////////////////////////////////////////////
-    Eye::GetInstance()->Turn(Direct::R);
-    delay(500);
-
-    // Nếu bên phải khoảng cách đến vật cản có thể chấp nhận thì đi theo hướng này
     ////////////////////////////////////////////////////////
-    if (!Eye::GetInstance()->HaveObstacle())
+    // TURN RIGHT
+    if (Driver::GetInstance()->CanTurnRight())
     {
       Serial.println("PHAI");
-      Eye::GetInstance()->Turn(Direct::CENTER);
       Driver::GetInstance()->TurnRight();
-      gIsGoBack = false;
     }
     else
     {
-      // Nếu không, đi lùi
-      //////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////
+      // GO BACK
       Serial.println("LUI");
-      gIsGoBack = true;
-      Eye::GetInstance()->Turn(Direct::CENTER);
       Driver::GetInstance()->GoBack();
       delay(200);
     }
@@ -103,18 +83,6 @@ void setup() {
 }
 
 void loop() {
-  Driver::GetInstance()->TurnLeft();
-  Driver::GetInstance()->Stop();
-  Serial.print("PWM R = ");
-  Serial.println(Driver::GetInstance()->GetPWMRight());
-  
-  Serial.print("PWM L = ");
-  Serial.println(Driver::GetInstance()->GetPWMLeft());
-  
-  delay(1000);
   //BalanceIFButtonPUSH();
-  //ObstacleAvoidance();
-  //Eye::GetInstance()->Turn(Direct::L);
-  //delay(1000);
-  //Eye::GetInstance()->Turn(Direct::R);
+  ObstacleAvoidance();
 }

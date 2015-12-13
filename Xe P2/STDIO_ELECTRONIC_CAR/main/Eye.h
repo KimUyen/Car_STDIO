@@ -8,7 +8,7 @@ class Eye
     void Setup();
     bool HaveObstacle();
     bool CanGo(long distance);
-    bool CheckObstacle(long distance);
+    bool HaveObstacle_NonIR();
     void Turn(Direct dir);
     static Eye * GetInstance();
     static void Release();

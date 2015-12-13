@@ -46,8 +46,9 @@ bool Eye::HaveObstacle()
   return false;
 }
 
-bool Eye::CheckObstacle(long distance)
+bool Eye::HaveObstacle_NonIR()
 {
+  long distance = GetDistance();
   if ((distance < DISTANCE_HAVE_OBSTACLE && distance > 0))
       return true;
   return false;

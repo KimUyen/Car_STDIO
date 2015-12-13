@@ -1,6 +1,7 @@
 #include "Define.h"
 #include "Encoder.h"
 #include "Driver.h"
+#include "Eye.h"
 
 Driver * Driver::m_instance = NULL;
 
@@ -17,6 +18,10 @@ void Driver::Release()
   m_instance = NULL;
 }
 
+bool Driver::IsGoBack()
+{
+  return m_isGoBack;
+}
 
 bool Driver::IsStop()
 {
@@ -39,6 +44,10 @@ void Driver::Setup()
 void Driver::GoHead()
 {
   m_isStop = false;
+  m_isGoBack = false;
+  // Turn Eye To Center
+  Eye::GetInstance()->Turn(Direct::CENTER);
+  
   //Running motor Right 
   digitalWrite(IN1_RIGHT, HIGH);
   digitalWrite(IN2_RIGHT, LOW);
@@ -52,6 +61,10 @@ void Driver::GoHead()
 void Driver::GoBack()
 {
   m_isStop = false;
+  m_isGoBack = true;
+  // Turn Eye To Center
+  Eye::GetInstance()->Turn(Direct::CENTER);
+  
   //Running motor Right 
   digitalWrite(IN1_RIGHT, LOW);
   digitalWrite(IN2_RIGHT, HIGH);
@@ -61,9 +74,30 @@ void Driver::GoBack()
   digitalWrite(IN2_LEFT, HIGH);
 }
 
+bool Driver::CanTurnLeft()
+{
+  // Turn Eye To Left
+  Eye::GetInstance()->Turn(Direct::L);
+  delay(1000);
+  // CheckDistance can turn
+  return !Eye::GetInstance()->HaveObstacle_NonIR();
+}
+
+bool Driver::CanTurnRight()
+{
+  // Turn Eye To RIGHT
+  Eye::GetInstance()->Turn(Direct::R);
+  delay(1000);
+  return !Eye::GetInstance()->HaveObstacle_NonIR();
+}
+
 void Driver::TurnLeft()
 {
   m_isStop = false;
+  m_isGoBack = false;
+   // Turn Eye To Center
+  Eye::GetInstance()->Turn(Direct::CENTER);
+  
   //Running motor A 
   digitalWrite(IN1_RIGHT, HIGH);
   digitalWrite(IN2_RIGHT, LOW); 
@@ -83,6 +117,11 @@ void Driver::TurnLeft()
 void Driver::TurnRight()
 {
   m_isStop = false;
+  m_isGoBack = false;
+  
+   // Turn Eye To Center
+  Eye::GetInstance()->Turn(Direct::CENTER);
+  
   //Running motor A 
   digitalWrite(IN1_RIGHT, LOW);
   digitalWrite(IN2_RIGHT, HIGH); 
@@ -148,6 +187,7 @@ Driver::Driver()
     m_pwmLeft = iTemp;
     
   m_isStop = true;
+  m_isGoBack = false;
 }
 
 Driver::~Driver()
