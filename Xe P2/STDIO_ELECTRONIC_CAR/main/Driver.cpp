@@ -26,12 +26,12 @@ bool Driver::IsStop()
 void Driver::Setup()
 {
   // Setup for motor right.
-  pinMode(EN_RIGHT, OUTPUT);
+  pinMode(EN_RIGHT, INPUT);
   pinMode(IN1_RIGHT, OUTPUT);
   pinMode(IN2_RIGHT, OUTPUT); 
 
   // Setup for motor left.
-  pinMode(EN_LEFT, OUTPUT);
+  pinMode(EN_LEFT, INPUT);
   pinMode(IN1_LEFT, OUTPUT);
   pinMode(IN2_LEFT, OUTPUT);
 }
@@ -46,6 +46,7 @@ void Driver::GoHead()
   //Running motor left
   digitalWrite(IN1_LEFT, HIGH);
   digitalWrite(IN2_LEFT, LOW);
+  
 }
 
 void Driver::GoBack()
@@ -71,12 +72,12 @@ void Driver::TurnLeft()
   digitalWrite(IN1_LEFT, LOW);
   digitalWrite(IN2_LEFT, HIGH);
   analogWrite(EN_RIGHT, m_pwmRight);
-   analogWrite(EN_LEFT, m_pwmLeft);
+  analogWrite(EN_LEFT, m_pwmLeft);
 
   // Wait encoder
-  Encoder::GetInstance()->Set(Wheel::RIGHT);
-  Encoder::GetInstance()->Wait(HOLES_FOR_TURN, Wheel::RIGHT);
-  Encoder::GetInstance()->Reset(Wheel::RIGHT);
+  Encoder::GetInstance()->Set(Wheel::LEFT);
+  Encoder::GetInstance()->Wait(HOLES_FOR_TURN, Wheel::LEFT);
+  Encoder::GetInstance()->Reset(Wheel::LEFT);
 }
 
 void Driver::TurnRight()

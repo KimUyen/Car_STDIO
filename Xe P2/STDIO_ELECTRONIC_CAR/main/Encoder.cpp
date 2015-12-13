@@ -33,6 +33,8 @@ void Encoder::Reset(Wheel type)
   
   if (type == Wheel::LEFT)
     detachInterrupt(m_pinInterruptL);
+
+  ResetPulsesDetect(type);
 }
 
 void Encoder::ResetPulsesDetect(Wheel type)
@@ -57,15 +59,14 @@ void Encoder::Wait(unsigned long numPulses, Wheel type)
 {
   if (type == Wheel::LEFT)
   {
-    while(m_pulsesDetectL < numPulses)
+    while(m_pulsesDetectL < HOLES_FOR_TURN)
     {
       // Do nothing;
     }
   }
-
-  if (type == Wheel::RIGHT)
+  else
   {
-    while(m_pulsesDetectR < numPulses)
+    while(m_pulsesDetectR < HOLES_FOR_TURN)
     {
       // Do nothing;
     }
@@ -92,11 +93,13 @@ void Encoder::IncreasePulsesDetect(Wheel type)
 
 void InterruptCounterLeft()
 {
+  Serial.println("COUNT LEFT");
   Encoder::GetInstance()->IncreasePulsesDetect(Wheel::LEFT);
 }
 
 void InterruptCounterRight()
 {
+  Serial.println("COUNT RIGHT");
   Encoder::GetInstance()->IncreasePulsesDetect(Wheel::RIGHT);
 }
 

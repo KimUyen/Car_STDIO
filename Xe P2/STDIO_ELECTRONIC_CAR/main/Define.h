@@ -18,8 +18,8 @@ const uint8_t gAddressEEPROM = 0;
 #define IN2_RIGHT   11
 //  Motor LEFT
 #define EN_LEFT     7
-#define IN1_LEFT    5
-#define IN2_LEFT    10
+#define IN1_LEFT    10
+#define IN2_LEFT    5
 #define PWM         200
 
 /// ==========================================================
@@ -28,7 +28,7 @@ const uint8_t gAddressEEPROM = 0;
 // 1. Sensor SRF-05
 #define TRIG_PIN    8
 #define ECHO_PIN    12
-#define DISTANCE_HAVE_OBSTACLE 20
+#define DISTANCE_HAVE_OBSTACLE 30
 #define DISTANCE_CAN_GO 50
 // 2. Sensor IR
 #define PHOTODIOT_IR  4
@@ -44,7 +44,7 @@ const uint8_t gAddressEEPROM = 0;
 #define PULSESPERTURN   15
 #define ENCODER_LEFT    2
 #define ENCODER_RIGHT   3
-#define HOLES_FOR_TURN  32
+#define HOLES_FOR_TURN  10
 #define HOLES_DISC      15
 
 

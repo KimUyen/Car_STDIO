@@ -91,6 +91,5 @@ float Eye::GetDistance()
  
   // convert to distance
   distanceCm = duration / 29.1 / 2;
-  
   return distanceCm;
 }

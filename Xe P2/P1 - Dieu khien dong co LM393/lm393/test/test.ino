@@ -1,12 +1,12 @@
 //Motor A
-int enA = 13;
-int in1 = 6;
-int in2 = 11;
+int enA = 6;
+int in1 = 11;
+int in2 = 13;
 
 //Motor B
-int enB = 7;
+int enB = 10;
 int in3 = 5;
-int in4 = 10;
+int in4 = 7;
 
 void setup()
 {
